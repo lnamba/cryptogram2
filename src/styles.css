@@ -1,0 +1,23 @@
+.flexRow {
+  flex-direction: row;
+  display: flex;
+}
+
+.letterContainer {
+  margin-right: 16px;
+  height: 30px;
+  min-width: 30px;
+  border-style: solid;
+  background-color: pink;
+}
+
+.outerLetter {
+  position: absolute;
+  background-color: red;
+  top: 65px;
+}
+
+.innerLetter {
+  position: absolute;
+  left: 5px;
+}
