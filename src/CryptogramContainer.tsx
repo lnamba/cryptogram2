@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import AlphabetPanel from './AlphabetPanel';
 import WordPanel from './WordPanel';
 
 const alpha = [
@@ -36,7 +37,11 @@ function App(): React.ReactElement {
   const [quote, setQuote] = useState<string>('');
   const [author, setAuthor] = useState<string>('');
   const [shuffledAlphabet, setShuffledAlphabet] = useState({});
-  const [quoteData, setQuoteData] = useState({});
+  const [quoteData, setQuoteData] = useState<
+    { letter: string; guess: string; isSelected: boolean; isPunc?: boolean }[]
+  >([]);
+  const [alphaData, setAlphaData] = useState([]);
+  const [guessedLetter, setGuessedLetter] = useState<string>('');
 
   useEffect(() => {
     fetch('http://localhost:3000/quotes/random')
@@ -49,46 +54,105 @@ function App(): React.ReactElement {
       });
 
     setShuffledAlphabet(shuffle());
+    setAlphaData(initializeAlphabet());
   }, []);
 
   useEffect(() => {
     if (quote) {
-      assignLettersToQuote();
+      setQuoteData(assignLettersToQuote());
     }
   }, [quote]);
 
   function assignLettersToQuote() {
-    let shuffledQuote = '';
+    const quoteData = [];
     const regex = /[a-zA-Z0-9]+/;
-    console.log('assignLettersToQuote', shuffledAlphabet);
 
     for (let i = 0; i < quote.length; i++) {
       if (regex.test(quote[i])) {
-        shuffledQuote += shuffledAlphabet[quote[i]];
+        quoteData.push({
+          letter: shuffledAlphabet[quote[i]],
+          guess: '',
+          isPunc: false,
+          isSelected: false,
+        });
       } else {
-        shuffledQuote += quote[i];
+        quoteData.push({
+          letter: quote[i],
+          guess: '',
+          isPunc: true,
+          isSelected: false,
+        });
       }
     }
 
-    console.log('assignLettersToQuote', shuffledQuote);
-    return shuffledQuote;
+    console.log('assignLettersToQuote', quoteData);
+    return quoteData;
+  }
+
+  function handleClick(letter) {
+    console.log('select', letter);
+    setQuoteData((quoteData) => {
+      const updatedQuoteData = [...quoteData];
+      return updatedQuoteData.map((item) => {
+        if (item.letter === letter) {
+          return {
+            ...item,
+            isSelected: true,
+          };
+        }
+        return {
+          ...item,
+          isSelected: false,
+        };
+      });
+    });
+  }
+
+  function handleGuess(letter: string) {
+    console.log('guessed', letter);
+    setQuoteData((quoteData) => {
+      const updatedQuoteData = [...quoteData];
+      const test = updatedQuoteData.map((item) => {
+        if (item.isSelected) {
+          return {
+            ...item,
+            guess: letter,
+          };
+        }
+        return item;
+      });
+      console.log(test);
+      return test;
+    });
+  }
+
+  function initializeAlphabet() {
+    const initial = [...alpha];
+    return initial.reduce((alphabet, letter) => {
+      alphabet.push({
+        letter,
+        [letter]: false,
+      });
+      return alphabet;
+    }, []);
   }
 
   function shuffle() {
     const initial = alpha.slice();
 
-    let curr = alpha.length,
-      temp,
-      randIndex;
+    let curr = initial.length;
+    let temp;
+    let randIndex;
 
     while (curr != 0) {
       //keep shuffling while there are still elems to shuffle
       randIndex = Math.floor(Math.random() * curr); // get random index whith elements leftover still
       curr -= 1;
-      temp = alpha[curr]; // set temp to the element at curr
-      alpha[curr] = alpha[randIndex]; // make the current equal the random element from above
-      alpha[randIndex] = temp;
+      temp = initial[curr]; // set temp to the element at curr
+      initial[curr] = initial[randIndex]; // make the current equal the random element from above
+      initial[randIndex] = temp;
     }
+
     return initial.reduce((updatedAlphabet, letter, index) => {
       updatedAlphabet[letter] = alpha[index];
       return updatedAlphabet;
@@ -98,7 +162,15 @@ function App(): React.ReactElement {
   return (
     <div>
       <h1>Cryptogram</h1>
-      {isLoaded ? <WordPanel quote={quote} /> : null}
+      {isLoaded ? (
+        <WordPanel
+          guessedLetter={guessedLetter}
+          quote={quote}
+          quoteData={quoteData}
+          onClick={handleClick}
+        />
+      ) : null}
+      <AlphabetPanel alphaData={alphaData} onClick={handleGuess} />
     </div>
   );
 }

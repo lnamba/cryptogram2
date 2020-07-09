@@ -1,23 +1,55 @@
 .flexRow {
   flex-direction: row;
   display: flex;
+  justify-content: space-between;
 }
 
 .letterContainer {
-  margin-right: 16px;
-  height: 30px;
-  min-width: 30px;
-  border-style: solid;
+  margin-right: 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hasLetter {
   background-color: pink;
 }
 
 .outerLetter {
-  position: absolute;
-  background-color: red;
-  top: 65px;
+  display: flex;
+  height: 30px;
+  min-width: 30px;
+  align-items: center;
+  justify-content: center;
 }
 
-.innerLetter {
-  position: absolute;
-  left: 5px;
+.guess {
+  display: flex;
+  height: 30px;
+  min-width: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nonPunctuation {
+  border-bottom-style: solid;
+}
+
+.alphaContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 200px 8px 0 8px;
+  height: 35px;
+  width: 60px;
+  /* border: black;
+  border-style: solid;
+  border-radius: 50%; */
+}
+
+.alpha {
+}
+
+.selected {
+  font-size: 75px;
+  text-align: center;
 }

@@ -4,16 +4,32 @@ import './styles.css';
 import Letter from './Letter';
 
 interface Props {
+  guessedLetter?: string;
   quote: string;
+  quoteData: {
+    letter: string;
+    guess: string;
+    isSelected: boolean;
+    isPunc?: boolean;
+  }[];
+  onClick(letter: string): void;
 }
 
 function WordPanel(props: Props) {
-  const { quote } = props;
+  const { guessedLetter, onClick, quoteData } = props;
 
   return (
     <div className='flexRow'>
-      {quote.split('').map((letter, index) => (
-        <Letter letter={letter} key={index} />
+      {quoteData?.map((data, index) => (
+        <Letter
+          letter={data.letter}
+          guess={data.guess}
+          guessedLetter={guessedLetter}
+          isSelected={data.isSelected}
+          isPunc={data.isPunc}
+          onClick={onClick}
+          key={index}
+        />
       ))}
     </div>
   );
