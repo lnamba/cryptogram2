@@ -38,10 +38,17 @@ function App(): React.ReactElement {
   const [author, setAuthor] = useState<string>('');
   const [shuffledAlphabet, setShuffledAlphabet] = useState({});
   const [quoteData, setQuoteData] = useState<
-    { letter: string; guess: string; isSelected: boolean; isPunc?: boolean }[]
+    {
+      letter: string;
+      guess: string;
+      isSelected: boolean;
+      isPunc: boolean;
+      isUsed: boolean;
+    }[]
   >([]);
   const [alphaData, setAlphaData] = useState([]);
   const [guessedLetter, setGuessedLetter] = useState<string>('');
+  const regex = /[a-zA-Z0-9]+/;
 
   useEffect(() => {
     fetch('http://localhost:3000/quotes/random')
@@ -63,9 +70,40 @@ function App(): React.ReactElement {
     }
   }, [quote]);
 
+  useEffect(() => {
+    const updatedQuoteData = [...quoteData];
+    console.log('quoetData change', updatedQuoteData);
+    if (
+      updatedQuoteData.length &&
+      updatedQuoteData.every(({ isUsed }) => Boolean(isUsed))
+    ) {
+      window.alert('complete');
+    }
+
+    const usedLetters = updatedQuoteData.reduce((letters, letter) => {
+      if (letter.guess) {
+        letters.push(letter.guess);
+      }
+
+      return letters;
+    }, []);
+
+    if (usedLetters.length) {
+      setAlphaData((alphaData) => {
+        const updatedAlphaData = [...alphaData];
+        return updatedAlphaData.map((item) => {
+          const result = {
+            ...item,
+            isUsed: usedLetters.includes(item.letter),
+          };
+          return result;
+        });
+      });
+    }
+  }, [quoteData]);
+
   function assignLettersToQuote() {
     const quoteData = [];
-    const regex = /[a-zA-Z0-9]+/;
 
     for (let i = 0; i < quote.length; i++) {
       if (regex.test(quote[i])) {
@@ -74,6 +112,7 @@ function App(): React.ReactElement {
           guess: '',
           isPunc: false,
           isSelected: false,
+          isUsed: false,
         });
       } else {
         quoteData.push({
@@ -81,28 +120,23 @@ function App(): React.ReactElement {
           guess: '',
           isPunc: true,
           isSelected: false,
+          isUsed: true,
         });
       }
     }
 
-    console.log('assignLettersToQuote', quoteData);
     return quoteData;
   }
 
   function handleClick(letter) {
     console.log('select', letter);
+
     setQuoteData((quoteData) => {
       const updatedQuoteData = [...quoteData];
       return updatedQuoteData.map((item) => {
-        if (item.letter === letter) {
-          return {
-            ...item,
-            isSelected: true,
-          };
-        }
         return {
           ...item,
-          isSelected: false,
+          isSelected: item.letter === letter,
         };
       });
     });
@@ -112,17 +146,16 @@ function App(): React.ReactElement {
     console.log('guessed', letter);
     setQuoteData((quoteData) => {
       const updatedQuoteData = [...quoteData];
-      const test = updatedQuoteData.map((item) => {
+      return updatedQuoteData.map((item) => {
         if (item.isSelected) {
           return {
             ...item,
-            guess: letter,
+            guess: letter === 'clear' ? '' : letter,
+            isUsed: letter !== 'clear',
           };
         }
         return item;
       });
-      console.log(test);
-      return test;
     });
   }
 
@@ -131,7 +164,7 @@ function App(): React.ReactElement {
     return initial.reduce((alphabet, letter) => {
       alphabet.push({
         letter,
-        [letter]: false,
+        isUsed: false,
       });
       return alphabet;
     }, []);
@@ -140,17 +173,24 @@ function App(): React.ReactElement {
   function shuffle() {
     const initial = alpha.slice();
 
-    let curr = initial.length;
+    let current = initial.length;
     let temp;
-    let randIndex;
+    let index;
 
-    while (curr != 0) {
+    while (current !== 0) {
       //keep shuffling while there are still elems to shuffle
-      randIndex = Math.floor(Math.random() * curr); // get random index whith elements leftover still
-      curr -= 1;
-      temp = initial[curr]; // set temp to the element at curr
-      initial[curr] = initial[randIndex]; // make the current equal the random element from above
-      initial[randIndex] = temp;
+      index = Math.floor(Math.random() * current); // get random index whith elements leftover still
+      current -= 1;
+      temp = initial[current]; // set temp to the element at current
+      initial[current] = initial[index]; // make the current equal the random element
+      initial[index] = temp;
+    }
+
+    const match = alpha.find((letter, index) => letter === initial[index]);
+
+    // if any element is in the same place, shuffle again
+    if (match) {
+      return shuffle();
     }
 
     return initial.reduce((updatedAlphabet, letter, index) => {
@@ -171,6 +211,10 @@ function App(): React.ReactElement {
         />
       ) : null}
       <AlphabetPanel alphaData={alphaData} onClick={handleGuess} />
+
+      <div className='clear flexColumn' onClick={() => handleGuess('clear')}>
+        <h2>Clear</h2>
+      </div>
     </div>
   );
 }

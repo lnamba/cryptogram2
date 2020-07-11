@@ -12,9 +12,9 @@ function AlphabetPanel(props: Props) {
 
   return (
     <div className='flexRow'>
-      {alphaData.map((letter, index) => (
+      {alphaData.map(({ letter, isUsed }, index) => (
         <div className='alphaContainer' key={index}>
-          <LetterButton letter={letter.letter} onClick={onClick} />
+          <LetterButton letter={letter} isUsed={isUsed} onClick={onClick} />
         </div>
       ))}
     </div>

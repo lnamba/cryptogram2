@@ -1,7 +1,6 @@
 .flexRow {
   flex-direction: row;
   display: flex;
-  justify-content: space-between;
 }
 
 .letterContainer {
@@ -41,15 +40,19 @@
   margin: 200px 8px 0 8px;
   height: 35px;
   width: 60px;
-  /* border: black;
-  border-style: solid;
-  border-radius: 50%; */
 }
 
-.alpha {
+.isUsed {
+  color: lightslategrey;
 }
 
 .selected {
   font-size: 75px;
+  text-align: center;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }

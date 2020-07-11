@@ -10,7 +10,8 @@ interface Props {
     letter: string;
     guess: string;
     isSelected: boolean;
-    isPunc?: boolean;
+    isPunc: boolean;
+    isUsed: boolean;
   }[];
   onClick(letter: string): void;
 }
@@ -27,6 +28,7 @@ function WordPanel(props: Props) {
           guessedLetter={guessedLetter}
           isSelected={data.isSelected}
           isPunc={data.isPunc}
+          isUsed={data.isUsed}
           onClick={onClick}
           key={index}
         />
