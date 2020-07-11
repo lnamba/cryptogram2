@@ -7,6 +7,7 @@ interface Props {
   guessedLetter?: string;
   quote: string;
   quoteData: {
+    answer: string;
     letter: string;
     guess: string;
     isSelected: boolean;
@@ -28,7 +29,6 @@ function WordPanel(props: Props) {
           guessedLetter={guessedLetter}
           isSelected={data.isSelected}
           isPunc={data.isPunc}
-          isUsed={data.isUsed}
           onClick={onClick}
           key={index}
         />

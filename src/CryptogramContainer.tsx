@@ -39,6 +39,7 @@ function App(): React.ReactElement {
   const [shuffledAlphabet, setShuffledAlphabet] = useState({});
   const [quoteData, setQuoteData] = useState<
     {
+      answer: string;
       letter: string;
       guess: string;
       isSelected: boolean;
@@ -72,12 +73,15 @@ function App(): React.ReactElement {
 
   useEffect(() => {
     const updatedQuoteData = [...quoteData];
-    console.log('quoetData change', updatedQuoteData);
     if (
       updatedQuoteData.length &&
       updatedQuoteData.every(({ isUsed }) => Boolean(isUsed))
     ) {
-      window.alert('complete');
+      if (updatedQuoteData.every(({ answer, guess }) => answer === guess)) {
+        window.alert('winner');
+      } else {
+        window.alert('loser');
+      }
     }
 
     const usedLetters = updatedQuoteData.reduce((letters, letter) => {
@@ -108,6 +112,7 @@ function App(): React.ReactElement {
     for (let i = 0; i < quote.length; i++) {
       if (regex.test(quote[i])) {
         quoteData.push({
+          answer: quote[i],
           letter: shuffledAlphabet[quote[i]],
           guess: '',
           isPunc: false,
@@ -116,8 +121,9 @@ function App(): React.ReactElement {
         });
       } else {
         quoteData.push({
+          answer: quote[i],
           letter: quote[i],
-          guess: '',
+          guess: quote[i],
           isPunc: true,
           isSelected: false,
           isUsed: true,

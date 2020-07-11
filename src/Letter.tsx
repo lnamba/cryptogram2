@@ -7,18 +7,14 @@ interface Props {
   guessedLetter?: string;
   isSelected: boolean;
   isPunc: boolean;
-  isUsed: boolean;
   letter: string;
   onClick(letter: string): void;
 }
 
 function Letter(props: Props) {
-  const { guess, isSelected, isPunc, isUsed, letter, onClick } = props;
-  // const [isSelected, setIsSelected] = useState<boolean>(false);
+  const { guess, isSelected, isPunc, letter, onClick } = props;
 
   function handleClick(letter) {
-    // const updatedIsSelected = !isSelected;
-    // setIsSelected(updatedIsSelected);
     onClick(letter);
   }
 

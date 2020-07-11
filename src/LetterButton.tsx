@@ -1,4 +1,5 @@
 import React from 'react';
+import { noop } from 'lodash';
 
 interface Props {
   isUsed: boolean;
@@ -12,7 +13,7 @@ function LetterButton(props: Props) {
   return (
     <div
       className={`alpha ${isUsed ? 'isUsed' : ''}`}
-      onClick={() => onClick(letter)}
+      onClick={() => (isUsed ? noop() : onClick(letter))}
     >
       <h1>{letter}</h1>
     </div>
