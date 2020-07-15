@@ -206,8 +206,8 @@ function App(): React.ReactElement {
   }
 
   return (
-    <div>
-      <h1>Cryptogram</h1>
+    <div className='cryptogramContainer'>
+      <h1 className='header'>Cryptogram</h1>
       {isLoaded ? (
         <WordPanel
           guessedLetter={guessedLetter}
@@ -218,7 +218,10 @@ function App(): React.ReactElement {
       ) : null}
       <AlphabetPanel alphaData={alphaData} onClick={handleGuess} />
 
-      <div className='clear flexColumn' onClick={() => handleGuess('clear')}>
+      <div
+        className='clearButton flexColumn'
+        onClick={() => handleGuess('clear')}
+      >
         <h2>Clear</h2>
       </div>
     </div>

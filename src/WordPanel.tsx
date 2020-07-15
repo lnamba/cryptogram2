@@ -21,7 +21,7 @@ function WordPanel(props: Props) {
   const { guessedLetter, onClick, quoteData } = props;
 
   return (
-    <div className='flexRow'>
+    <div className='flexRow fixedWidth'>
       {quoteData?.map((data, index) => (
         <Letter
           letter={data.letter}

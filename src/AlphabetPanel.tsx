@@ -11,7 +11,7 @@ function AlphabetPanel(props: Props) {
   const { alphaData, onClick } = props;
 
   return (
-    <div className='flexRow'>
+    <div className='flexRow fixedWidth'>
       {alphaData.map(({ letter, isUsed }, index) => (
         <div className='alphaContainer' key={index}>
           <LetterButton letter={letter} isUsed={isUsed} onClick={onClick} />

@@ -22,7 +22,7 @@ function Letter(props: Props) {
     return (
       <div className='letterContainer'>
         <div className='guess'>
-          <h2>{letter.toUpperCase()}</h2>
+          <h2 className='guessTile punctuation'>{letter.toUpperCase()}</h2>
         </div>
       </div>
     );
@@ -31,11 +31,15 @@ function Letter(props: Props) {
   return (
     <div className='letterContainer' onClick={() => handleClick(letter)}>
       <div className={`guess nonPunctuation ${isSelected ? 'hasLetter' : ''}`}>
-        {guess ? <h2>{guess.toUpperCase()}</h2> : null}
+        {guess ? (
+          <h2 className={`guessTile ${isSelected ? 'whiteText' : 'blackText'}`}>
+            {guess.toUpperCase()}
+          </h2>
+        ) : null}
       </div>
 
       <div className='outerLetter'>
-        <h2>{letter.toUpperCase()}</h2>
+        <h2 className='guessTile'>{letter.toUpperCase()}</h2>
       </div>
     </div>
   );
