@@ -4,7 +4,6 @@ import './styles.css';
 import Letter from './Letter';
 
 interface Props {
-  guessedLetter?: string;
   quote: string;
   quoteData: {
     answer: string;
@@ -18,7 +17,7 @@ interface Props {
 }
 
 function WordPanel(props: Props) {
-  const { guessedLetter, onClick, quoteData } = props;
+  const { onClick, quoteData } = props;
 
   return (
     <div className='flexRow fixedWidth'>
@@ -26,7 +25,6 @@ function WordPanel(props: Props) {
         <Letter
           letter={data.letter}
           guess={data.guess}
-          guessedLetter={guessedLetter}
           isSelected={data.isSelected}
           isPunc={data.isPunc}
           onClick={onClick}

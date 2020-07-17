@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import AlphabetPanel from './AlphabetPanel';
 import WordPanel from './WordPanel';
+import { WindowWidth } from './hooks';
 
 const alpha = [
   'A',
@@ -48,7 +49,7 @@ function App(): React.ReactElement {
     }[]
   >([]);
   const [alphaData, setAlphaData] = useState([]);
-  const [guessedLetter, setGuessedLetter] = useState<string>('');
+  const fontSize = WindowWidth() > 650 ? '100px' : '50px';
   const regex = /[a-zA-Z0-9]+/;
 
   useEffect(() => {
@@ -207,14 +208,11 @@ function App(): React.ReactElement {
 
   return (
     <div className='cryptogramContainer'>
-      <h1 className='header'>Cryptogram</h1>
+      <h1 className='header' style={{ fontSize }}>
+        Cryptogram
+      </h1>
       {isLoaded ? (
-        <WordPanel
-          guessedLetter={guessedLetter}
-          quote={quote}
-          quoteData={quoteData}
-          onClick={handleClick}
-        />
+        <WordPanel quote={quote} quoteData={quoteData} onClick={handleClick} />
       ) : null}
       <AlphabetPanel alphaData={alphaData} onClick={handleGuess} />
 

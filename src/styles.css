@@ -7,7 +7,6 @@
 
 .header {
   text-align: center;
-  font-size: 100px;
 }
 
 .flexRow {
@@ -44,7 +43,7 @@
 .outerLetter {
   display: flex;
   height: 50px;
-  min-width: 50px;
+  /* min-width: 50px; */
   align-items: center;
   justify-content: center;
 }
@@ -55,10 +54,6 @@
   min-width: 50px;
   align-items: center;
   justify-content: center;
-}
-
-.guessTile {
-  font-size: 40px;
 }
 
 .punctuation {

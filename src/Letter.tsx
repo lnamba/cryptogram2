@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 import './styles.css';
+import { WindowWidth } from './hooks';
 
 interface Props {
   guess: string;
-  guessedLetter?: string;
   isSelected: boolean;
   isPunc: boolean;
   letter: string;
@@ -13,6 +13,10 @@ interface Props {
 
 function Letter(props: Props) {
   const { guess, isSelected, isPunc, letter, onClick } = props;
+  const styles =
+    WindowWidth() > 650
+      ? { letterSize: '40px', minWidth: '50px' }
+      : { letterSize: '24px', minWidth: '32px' };
 
   function handleClick(letter) {
     onClick(letter);
@@ -21,8 +25,10 @@ function Letter(props: Props) {
   if (isPunc) {
     return (
       <div className='letterContainer'>
-        <div className='guess'>
-          <h2 className='guessTile punctuation'>{letter.toUpperCase()}</h2>
+        <div className='guess' style={{ minWidth: styles.minWidth }}>
+          <h2 className='punctuation' style={{ fontSize: styles.letterSize }}>
+            {letter.toUpperCase()}
+          </h2>
         </div>
       </div>
     );
@@ -30,16 +36,22 @@ function Letter(props: Props) {
 
   return (
     <div className='letterContainer' onClick={() => handleClick(letter)}>
-      <div className={`guess nonPunctuation ${isSelected ? 'hasLetter' : ''}`}>
+      <div
+        className={`guess nonPunctuation ${isSelected ? 'hasLetter' : ''}`}
+        style={{ minWidth: styles.minWidth }}
+      >
         {guess ? (
-          <h2 className={`guessTile ${isSelected ? 'whiteText' : 'blackText'}`}>
+          <h2
+            className={`${isSelected ? 'whiteText' : 'blackText'}`}
+            style={{ fontSize: styles.letterSize }}
+          >
             {guess.toUpperCase()}
           </h2>
         ) : null}
       </div>
 
       <div className='outerLetter'>
-        <h2 className='guessTile'>{letter.toUpperCase()}</h2>
+        <h2 style={{ fontSize: styles.letterSize }}>{letter.toUpperCase()}</h2>
       </div>
     </div>
   );
