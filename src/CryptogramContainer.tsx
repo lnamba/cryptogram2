@@ -46,6 +46,7 @@ function App(): React.ReactElement {
       isSelected: boolean;
       isPunc: boolean;
       isUsed: boolean;
+      word: string;
     }[]
   >([]);
   const [alphaData, setAlphaData] = useState([]);
@@ -108,29 +109,36 @@ function App(): React.ReactElement {
   }, [quoteData]);
 
   function assignLettersToQuote() {
-    const quoteData = [];
-
-    for (let i = 0; i < quote.length; i++) {
-      if (regex.test(quote[i])) {
-        quoteData.push({
-          answer: quote[i],
-          letter: shuffledAlphabet[quote[i]],
-          guess: '',
-          isPunc: false,
+    const split = quote.split(' ');
+    const quoteData = split.reduce((result, word, index) => {
+      word.split('').map((letter) => {
+        result.push({
+          answer: letter,
+          letter: regex.test(letter) ? shuffledAlphabet[letter] : letter,
+          guess: regex.test(letter) ? '' : letter,
+          isPunc: !regex.test(letter),
           isSelected: false,
-          isUsed: false,
+          isUsed: !regex.test(letter),
+          word,
         });
-      } else {
-        quoteData.push({
-          answer: quote[i],
-          letter: quote[i],
-          guess: quote[i],
+      });
+
+      if (index !== split.length - 1) {
+        result.push({
+          answer: ' ',
+          letter: ' ',
+          guess: ' ',
           isPunc: true,
           isSelected: false,
           isUsed: true,
+          word: '',
         });
       }
-    }
+
+      return result;
+    }, []);
+
+    console.log(quoteData);
 
     return quoteData;
   }

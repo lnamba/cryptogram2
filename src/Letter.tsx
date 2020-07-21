@@ -8,11 +8,12 @@ interface Props {
   isSelected: boolean;
   isPunc: boolean;
   letter: string;
+  word?: string;
   onClick(letter: string): void;
 }
 
 function Letter(props: Props) {
-  const { guess, isSelected, isPunc, letter, onClick } = props;
+  const { guess, isSelected, isPunc, letter, onClick, word } = props;
   const styles =
     WindowWidth() > 650
       ? { letterSize: '40px', minWidth: '50px' }
