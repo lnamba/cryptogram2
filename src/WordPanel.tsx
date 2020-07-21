@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './styles.css';
-import Letter from './Letter';
+import Word from './Word';
 
 interface Props {
   quote: string;
@@ -12,7 +12,7 @@ interface Props {
     isSelected: boolean;
     isPunc: boolean;
     isUsed: boolean;
-  }[];
+  }[][];
   onClick(letter: string): void;
 }
 
@@ -22,14 +22,7 @@ function WordPanel(props: Props) {
   return (
     <div className='flexRow fixedWidth'>
       {quoteData?.map((data, index) => (
-        <Letter
-          letter={data.letter}
-          guess={data.guess}
-          isSelected={data.isSelected}
-          isPunc={data.isPunc}
-          onClick={onClick}
-          key={index}
-        />
+        <Word data={data} key={index} onClick={onClick} />
       ))}
     </div>
   );
