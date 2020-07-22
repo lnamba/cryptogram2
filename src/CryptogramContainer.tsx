@@ -38,16 +38,7 @@ function App(): React.ReactElement {
   const [quote, setQuote] = useState<string>('');
   const [author, setAuthor] = useState<string>('');
   const [shuffledAlphabet, setShuffledAlphabet] = useState({});
-  const [quoteData, setQuoteData] = useState<
-    {
-      answer: string;
-      letter: string;
-      guess: string;
-      isSelected: boolean;
-      isPunc: boolean;
-      isUsed: boolean;
-    }[]
-  >([]);
+  const [quoteData, setQuoteData] = useState<any>([]);
   const [alphaData, setAlphaData] = useState([]);
   const fontSize = WindowWidth() > 650 ? '100px' : '50px';
   const regex = /[a-zA-Z0-9]+/;
@@ -76,19 +67,27 @@ function App(): React.ReactElement {
     const updatedQuoteData = [...quoteData];
     if (
       updatedQuoteData.length &&
-      updatedQuoteData.every(({ isUsed }) => Boolean(isUsed))
+      updatedQuoteData.every((word) => {
+        return word.every(({ isUsed }) => Boolean(isUsed));
+      })
     ) {
-      if (updatedQuoteData.every(({ answer, guess }) => answer === guess)) {
+      if (
+        updatedQuoteData.every((word) =>
+          word.every(({ answer, guess }) => answer === guess)
+        )
+      ) {
         window.alert('winner');
       } else {
         window.alert('loser');
       }
     }
 
-    const usedLetters = updatedQuoteData.reduce((letters, letter) => {
-      if (letter.guess) {
-        letters.push(letter.guess);
-      }
+    const usedLetters = updatedQuoteData.reduce((letters, word) => {
+      word.forEach((letter) => {
+        if (letter.guess) {
+          letters.push(letter.guess);
+        }
+      });
 
       return letters;
     }, []);
@@ -97,6 +96,7 @@ function App(): React.ReactElement {
       setAlphaData((alphaData) => {
         const updatedAlphaData = [...alphaData];
         return updatedAlphaData.map((item) => {
+          console.log(item);
           const result = {
             ...item,
             isUsed: usedLetters.includes(item.letter),
@@ -108,29 +108,25 @@ function App(): React.ReactElement {
   }, [quoteData]);
 
   function assignLettersToQuote() {
-    const quoteData = [];
+    const split = quote.split(' ');
 
-    for (let i = 0; i < quote.length; i++) {
-      if (regex.test(quote[i])) {
-        quoteData.push({
-          answer: quote[i],
-          letter: shuffledAlphabet[quote[i]],
-          guess: '',
-          isPunc: false,
+    const quoteData = split.reduce((result, word, index) => {
+      let letters = [];
+      word.split('').forEach((letter, ind) => {
+        letters.push({
+          answer: letter,
+          letter: regex.test(letter) ? shuffledAlphabet[letter] : letter,
+          guess: regex.test(letter) ? '' : letter,
+          isPunc: !regex.test(letter),
           isSelected: false,
-          isUsed: false,
+          isUsed: !regex.test(letter),
         });
-      } else {
-        quoteData.push({
-          answer: quote[i],
-          letter: quote[i],
-          guess: quote[i],
-          isPunc: true,
-          isSelected: false,
-          isUsed: true,
-        });
-      }
-    }
+      });
+      result.push(letters);
+      letters = [];
+
+      return result;
+    }, []);
 
     return quoteData;
   }
@@ -140,12 +136,12 @@ function App(): React.ReactElement {
 
     setQuoteData((quoteData) => {
       const updatedQuoteData = [...quoteData];
-      return updatedQuoteData.map((item) => {
-        return {
+      return updatedQuoteData.map((word) =>
+        word.map((item) => ({
           ...item,
           isSelected: item.letter === letter,
-        };
-      });
+        }))
+      );
     });
   }
 
@@ -153,15 +149,17 @@ function App(): React.ReactElement {
     console.log('guessed', letter);
     setQuoteData((quoteData) => {
       const updatedQuoteData = [...quoteData];
-      return updatedQuoteData.map((item) => {
-        if (item.isSelected) {
-          return {
-            ...item,
-            guess: letter === 'clear' ? '' : letter,
-            isUsed: letter !== 'clear',
-          };
-        }
-        return item;
+      return updatedQuoteData.map((word) => {
+        return word.map((item) => {
+          if (item.isSelected) {
+            return {
+              ...item,
+              guess: letter === 'clear' ? '' : letter,
+              isUsed: letter !== 'clear',
+            };
+          }
+          return item;
+        });
       });
     });
   }

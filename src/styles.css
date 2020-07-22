@@ -43,7 +43,6 @@
 .outerLetter {
   display: flex;
   height: 50px;
-  /* min-width: 50px; */
   align-items: center;
   justify-content: center;
 }
@@ -57,7 +56,7 @@
 }
 
 .punctuation {
-  margin-top: 0px;
+  margin-top: 50px;
 }
 
 .nonPunctuation {

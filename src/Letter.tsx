@@ -27,7 +27,7 @@ function Letter(props: Props) {
       <div className='letterContainer'>
         <div className='guess' style={{ minWidth: styles.minWidth }}>
           <h2 className='punctuation' style={{ fontSize: styles.letterSize }}>
-            {letter.toUpperCase()}
+            {letter?.toUpperCase()}
           </h2>
         </div>
       </div>
@@ -45,13 +45,13 @@ function Letter(props: Props) {
             className={`${isSelected ? 'whiteText' : 'blackText'}`}
             style={{ fontSize: styles.letterSize }}
           >
-            {guess.toUpperCase()}
+            {guess?.toUpperCase()}
           </h2>
         ) : null}
       </div>
 
       <div className='outerLetter'>
-        <h2 style={{ fontSize: styles.letterSize }}>{letter.toUpperCase()}</h2>
+        <h2 style={{ fontSize: styles.letterSize }}>{letter?.toUpperCase()}</h2>
       </div>
     </div>
   );
