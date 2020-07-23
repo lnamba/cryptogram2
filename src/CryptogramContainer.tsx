@@ -40,7 +40,8 @@ function App(): React.ReactElement {
   const [shuffledAlphabet, setShuffledAlphabet] = useState({});
   const [quoteData, setQuoteData] = useState<any>([]);
   const [alphaData, setAlphaData] = useState([]);
-  const fontSize = WindowWidth() > 650 ? '100px' : '50px';
+  const [wasReset, setWasReset] = useState(false);
+  const fontSize = WindowWidth() > 650 ? '70px' : '50px';
   const regex = /[a-zA-Z0-9]+/;
 
   useEffect(() => {
@@ -92,15 +93,18 @@ function App(): React.ReactElement {
       return letters;
     }, []);
 
-    if (usedLetters.length) {
+    if (!usedLetters.length && wasReset) {
+      setAlphaData(initializeAlphabet());
+      setWasReset(false);
+    } else if (usedLetters.length) {
       setAlphaData((alphaData) => {
         const updatedAlphaData = [...alphaData];
         return updatedAlphaData.map((item) => {
-          console.log(item);
           const result = {
             ...item,
             isUsed: usedLetters.includes(item.letter),
           };
+
           return result;
         });
       });
@@ -128,6 +132,7 @@ function App(): React.ReactElement {
       return result;
     }, []);
 
+    console.log(quoteData);
     return quoteData;
   }
 
@@ -175,6 +180,23 @@ function App(): React.ReactElement {
     }, []);
   }
 
+  function resetAll() {
+    setWasReset(true);
+    setQuoteData((quoteData) => {
+      const updatedQuoteData = [...quoteData];
+      return updatedQuoteData.map((word) => {
+        return word.map((item) => {
+          return {
+            ...item,
+            guess: '',
+            isUsed: false,
+            isSelected: false,
+          };
+        });
+      });
+    });
+  }
+
   function shuffle() {
     const initial = alpha.slice();
 
@@ -214,11 +236,14 @@ function App(): React.ReactElement {
       ) : null}
       <AlphabetPanel alphaData={alphaData} onClick={handleGuess} />
 
-      <div
-        className='clearButton flexColumn'
-        onClick={() => handleGuess('clear')}
-      >
-        <h2>Clear</h2>
+      <div className='clearButton flexRow button'>
+        <div onClick={() => handleGuess('clear')}>
+          <h2>Clear</h2>
+        </div>
+
+        <div onClick={() => resetAll()} className='button'>
+          <h2>Reset</h2>
+        </div>
       </div>
     </div>
   );

@@ -16,8 +16,8 @@ function Letter(props: Props) {
   const styles =
     WindowWidth() > 650
       ? isPunc
-        ? { letterSize: '40px', minWidth: '16px' }
-        : { letterSize: '40px', minWidth: '50px' }
+        ? { letterSize: '28px', minWidth: '16px' }
+        : { letterSize: '28px', minWidth: '36px' }
       : isPunc
       ? { letterSize: '24px', minWidth: '12px' }
       : { letterSize: '24px', minWidth: '32px' };
@@ -26,20 +26,8 @@ function Letter(props: Props) {
     onClick(letter);
   }
 
-  if (isPunc) {
-    return (
-      <div className='letterContainer'>
-        <div className='nonGuess' style={{ minWidth: styles.minWidth }}>
-          <h2 className='punctuation' style={{ fontSize: styles.letterSize }}>
-            {letter?.toUpperCase()}
-          </h2>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className='letterContainer' onClick={() => handleClick(letter)}>
+  let content = (
+    <div className='letterContent' onClick={() => handleClick(letter)}>
       <div
         className={`guess nonPunctuation ${isSelected ? 'hasLetter' : ''}`}
         style={{ minWidth: styles.minWidth }}
@@ -59,6 +47,20 @@ function Letter(props: Props) {
       </div>
     </div>
   );
+
+  if (isPunc) {
+    content = (
+      <div className='letterContent'>
+        <div className='nonGuess' style={{ minWidth: styles.minWidth }}>
+          <h2 className='punctuation' style={{ fontSize: styles.letterSize }}>
+            {letter?.toUpperCase()}
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
+  return <div className='letterContainer'>{content}</div>;
 }
 
 export default Letter;

@@ -7,6 +7,7 @@
 
 .header {
   text-align: center;
+  margin-bottom: 0;
 }
 
 .flexRow {
@@ -14,8 +15,13 @@
   display: flex;
 }
 
+.button {
+  margin: 0 40px;
+  cursor: pointer;
+}
+
 .fixedWidth {
-  width: 80%;
+  width: 95%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,6 +35,10 @@
 }
 
 .letterContainer {
+  cursor: pointer;
+}
+
+.letterContent {
   margin-right: 4px;
   display: flex;
   flex-direction: column;
@@ -86,12 +96,16 @@
   width: 60px;
 }
 
+.tile {
+  cursor: pointer;
+}
+
 .isUsed {
   color: lightslategrey;
 }
 
 .letterTileText {
-  font-size: 60px;
+  font-size: 50px;
   font-weight: 800;
 }
 
