@@ -20,10 +20,16 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.word {
+  display: flex;
+  margin-right: 32px;
 }
 
 .letterContainer {
-  margin-right: 2px;
+  margin-right: 4px;
   display: flex;
   flex-direction: column;
 }
@@ -51,6 +57,14 @@
   display: flex;
   height: 50px;
   min-width: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nonGuess {
+  display: flex;
+  height: 50px;
+  min-width: 20px;
   align-items: center;
   justify-content: center;
 }
