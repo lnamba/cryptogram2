@@ -15,7 +15,11 @@ function Letter(props: Props) {
   const { guess, isSelected, isPunc, letter, onClick } = props;
   const styles =
     WindowWidth() > 650
-      ? { letterSize: '40px', minWidth: '50px' }
+      ? isPunc
+        ? { letterSize: '40px', minWidth: '16px' }
+        : { letterSize: '40px', minWidth: '50px' }
+      : isPunc
+      ? { letterSize: '24px', minWidth: '12px' }
       : { letterSize: '24px', minWidth: '32px' };
 
   function handleClick(letter) {
@@ -25,7 +29,7 @@ function Letter(props: Props) {
   if (isPunc) {
     return (
       <div className='letterContainer'>
-        <div className='guess' style={{ minWidth: styles.minWidth }}>
+        <div className='nonGuess' style={{ minWidth: styles.minWidth }}>
           <h2 className='punctuation' style={{ fontSize: styles.letterSize }}>
             {letter?.toUpperCase()}
           </h2>

@@ -18,13 +18,7 @@ function Word(props: Props) {
   const { data, onClick } = props;
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        marginRight: '20px',
-      }}
-      className='wrap'
-    >
+    <div className='word'>
       {data?.map((item, index) => (
         <Letter
           letter={item.letter}
