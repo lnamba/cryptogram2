@@ -14,7 +14,7 @@ interface Props {
 function Letter(props: Props) {
   const { guess, isSelected, isPunc, letter, onClick } = props;
   const styles =
-    WindowWidth() > 650
+    WindowWidth().width > 650
       ? isPunc
         ? { letterSize: '28px', minWidth: '16px' }
         : { letterSize: '28px', minWidth: '36px' }
@@ -60,7 +60,7 @@ function Letter(props: Props) {
     );
   }
 
-  return <div className='letterContainer'>{content}</div>;
+  return <div className='pointer'>{content}</div>;
 }
 
 export default Letter;

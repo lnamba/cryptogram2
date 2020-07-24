@@ -18,6 +18,13 @@
 .button {
   margin: 0 40px;
   cursor: pointer;
+  background-color: midnightblue;
+  padding: 0 30px;
+  border-radius: 10px;
+}
+
+.button > h2 {
+  color: #fff;
 }
 
 .fixedWidth {
@@ -32,10 +39,6 @@
 .word {
   display: flex;
   margin-right: 32px;
-}
-
-.letterContainer {
-  cursor: pointer;
 }
 
 .letterContent {
@@ -80,7 +83,7 @@
 }
 
 .punctuation {
-  margin-top: 50px;
+  margin-top: 35px;
 }
 
 .nonPunctuation {
@@ -96,7 +99,7 @@
   width: 60px;
 }
 
-.tile {
+.pointer {
   cursor: pointer;
 }
 
@@ -122,4 +125,21 @@
 
 .clearButton {
   margin-top: 30px;
+}
+
+.centerAll {
+  justify-content: center;
+  align-items: center;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.endContainer {
+  height: 100%;
+}
+
+.wrap {
+  flex-wrap: wrap;
 }

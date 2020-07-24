@@ -12,7 +12,7 @@ function LetterButton(props: Props) {
 
   return (
     <div
-      className={`tile ${isUsed ? 'isUsed' : ''}`}
+      className={`pointer ${isUsed ? 'isUsed' : ''}`}
       onClick={() => (isUsed ? noop() : onClick(letter))}
     >
       <h1 className='letterTileText'>{letter}</h1>

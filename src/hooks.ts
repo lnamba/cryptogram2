@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 function WindowWidth() {
   const isClient = typeof window === 'object';
 
-  function getWidth() {
-    return isClient ? window.innerWidth : undefined;
+  function getWindowSize() {
+    return isClient
+      ? { width: window.innerWidth, height: window.innerHeight }
+      : { width: undefined, height: undefined };
   }
 
-  const [windowSize, setWindowSize] = useState(getWidth);
+  const [windowSize, setWindowSize] = useState(getWindowSize);
 
   useEffect((): any => {
     if (!isClient) {
@@ -15,7 +17,7 @@ function WindowWidth() {
     }
 
     function handleResize() {
-      setWindowSize(getWidth());
+      setWindowSize(getWindowSize());
     }
 
     window.addEventListener('resize', handleResize);
