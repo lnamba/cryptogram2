@@ -23,6 +23,7 @@ function GameContainer(props: Props) {
   } = props;
   const [quoteData, setQuoteData] = useState<any>([]);
   const [wasReset, setWasReset] = useState(false);
+  const [guessedLetter, setGuessedLetter] = useState('');
   const fontSize = WindowWidth().width > 650 ? '70px' : '50px';
   const regex = /[a-zA-Z0-9]+/;
 
@@ -62,7 +63,7 @@ function GameContainer(props: Props) {
     if (!usedLetters.length && wasReset) {
       setAlphaData(initializeAlphabet());
       setWasReset(false);
-    } else if (usedLetters.length) {
+    } else {
       setAlphaData((alphaData: { letter: string; isUsed: boolean }[]) => {
         const updatedAlphaData = [...alphaData];
         return updatedAlphaData.map((item) => {
@@ -75,7 +76,7 @@ function GameContainer(props: Props) {
         });
       });
     }
-  }, [quoteData]);
+  }, [quoteData, guessedLetter]);
 
   function assignLettersToQuote() {
     const split = quote.split(' ');
@@ -118,6 +119,7 @@ function GameContainer(props: Props) {
 
   function handleGuess(letter: string) {
     console.log('guessed', letter);
+    setGuessedLetter(letter);
     setQuoteData((quoteData) => {
       const updatedQuoteData = [...quoteData];
       return updatedQuoteData.map((word) => {
